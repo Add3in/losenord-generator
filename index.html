@@ -7,21 +7,45 @@
   <style>
     body {
       font-family: Arial;
-      background: linear-gradient(135deg, #6a85b6, #bac8e0);
+      margin: 0;
+      height: 100vh;
+
+      /* ✅ DIN BAKGRUNDSBILD */
+      background: url("bakgrund.png") no-repeat center center fixed;
+      background-size: cover;
+
       display: flex;
       justify-content: center;
       align-items: center;
-      height: 100vh;
-      margin: 0;
     }
 
+    /* 🔥 GLASS/KORT */
     .container {
-      background: rgba(255,255,255,0.95);
+      background: rgba(255,255,255,0.15);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+
       padding: 25px;
-      border-radius: 15px;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+      border-radius: 20px;
+      box-shadow: 0 10px 40px rgba(0,0,0,0.4);
+
       text-align: center;
       max-width: 350px;
+
+      /* animation in */
+      animation: fadeIn 0.8s ease;
+    }
+
+    /* ✨ fade in */
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
     }
 
     img {
@@ -32,16 +56,25 @@
 
     h1 {
       font-size: 20px;
-      margin-bottom: 15px;
+      color: white;
+      text-shadow: 0 0 10px rgba(0,0,0,0.7);
     }
 
     .password {
       font-size: 20px;
       font-family: monospace;
-      background: #eee;
+      background: rgba(255,255,255,0.8);
       padding: 10px;
       border-radius: 10px;
       margin: 15px 0;
+
+      /* 🔥 animation när nytt lösenord */
+      transition: transform 0.2s, background 0.2s;
+    }
+
+    .pulse {
+      transform: scale(1.1);
+      background: #d4f0ff;
     }
 
     button {
@@ -50,12 +83,15 @@
       border: none;
       border-radius: 10px;
       cursor: pointer;
-      background: #6a85b6;
+      background: #007bff;
       color: white;
+      font-weight: bold;
+      transition: 0.2s;
     }
 
     button:hover {
-      background: #5a72a0;
+      background: #0056b3;
+      transform: scale(1.05);
     }
   </style>
 </head>
@@ -64,8 +100,8 @@
 
   <div class="container">
 
-    <!-- ✅ BILD (ändra till exakt ditt filnamn!) -->
-    <img src="profil.jpg" alt="profilbild">
+    <!-- ✅ PROFILBILD -->
+    <img src="profil.jpg" alt="profil">
 
     <h1>Andreas superlösenordsgenerator</h1>
 
@@ -94,6 +130,8 @@
     }
 
     function generera() {
+      let el = document.getElementById("losenord");
+
       let lösen = storBokstav(slumpa(ord)) + storBokstav(slumpa(ord));
 
       if (Math.random() < 0.4) {
@@ -103,7 +141,11 @@
       lösen += Math.floor(Math.random() * 10);
       lösen += slumpa(special);
 
-      document.getElementById("losenord").innerText = lösen;
+      el.innerText = lösen;
+
+      // 🔥 liten animation
+      el.classList.add("pulse");
+      setTimeout(() => el.classList.remove("pulse"), 200);
     }
 
     function kopiera() {
