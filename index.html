@@ -2,13 +2,10 @@
 <html lang="sv">
 <head>
   <meta charset="UTF-8">
-
-  <!-- ✅ VIKTIG: mobil scaling -->
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
   <title>Andreas superlösenordsgenerator</title>
 
-  <!-- font -->
   <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600&display=swap" rel="stylesheet">
 
   <style>
@@ -26,7 +23,6 @@
       overflow: hidden;
     }
 
-    /* overlay */
     body::before {
       content: "";
       position: absolute;
@@ -34,7 +30,6 @@
       background: rgba(0,40,90,0.5);
     }
 
-    /* rök */
     .smoke {
       position: absolute;
       width: 200%;
@@ -48,18 +43,14 @@
       to   { transform: translate(20%, 20%); }
     }
 
-    /* kort */
     .container {
       position: relative;
       z-index: 2;
-
       background: rgba(0,0,0,0.5);
       backdrop-filter: blur(10px);
-
       padding: 25px;
       border-radius: 15px;
       text-align: center;
-
       width: 90%;
       max-width: 350px;
     }
@@ -80,13 +71,11 @@
     .password {
       font-size: 20px;
       font-family: Consolas, monospace;
-      background: rgba(255,255,255,0.95);
+      background: white;
       color: black;
-
       padding: 12px;
       border-radius: 8px;
       margin: 15px 0;
-
       word-break: break-all;
     }
 
@@ -96,12 +85,9 @@
       border: none;
       border-radius: 8px;
       cursor: pointer;
-
       background: #0066cc;
       color: white;
-
       width: 45%;
-      font-size: 14px;
     }
 
     button:hover {
@@ -122,7 +108,6 @@
       transition: 0.3s;
     }
 
-    /* 🎵 knapp */
     .music-btn {
       position: fixed;
       bottom: 15px;
@@ -134,16 +119,7 @@
       font-size: 18px;
     }
 
-    /* ✅ EXTRA mobiljustering */
     @media (max-width: 500px) {
-      h1 {
-        font-size: 14px;
-      }
-
-      .password {
-        font-size: 18px;
-      }
-
       button {
         width: 100%;
       }
@@ -157,7 +133,7 @@
 
   <div class="container">
 
-    <!-- profil -->
+    <!-- PROFILBILD -->
     <img src="profil.jpg" alt="profil">
 
     <h1>Andreas superlösenordsgenerator</h1>
@@ -173,7 +149,7 @@
 
   </div>
 
-  <!-- 🎵 musik -->
+  <!-- MUSIK -->
   <audio id="musik" loop>
     <source src="musik.mp3" type="audio/mpeg">
   </audio>
@@ -183,11 +159,16 @@
   <script>
     const ord = [
       "sol","skog","vatten","berg","vind","eld",
-      "stjarna","hav","moln","regn","sno","ljus","morker"
+      "stjarna","hav","moln","regn","sno","ljus","morker",
+      "sten","himlen","jord","flod","storm","is",
+      "dimma","aske","flamma","rost","skugga","natt",
+      "dag","ljud","eko","kraft","skydd","signal",
+      "kod","data","server","system","cloud","nackel",
+      "laser","motor","drift","energi","zon"
     ];
 
-    const special = "!@#$%&*?";
-
+    const special = "!@#$%&*?+-_=:/.";
+    
     function slumpa(lista) {
       return lista[Math.floor(Math.random() * lista.length)];
     }
@@ -220,14 +201,24 @@
     function generera() {
       let el = document.getElementById("losenord");
 
-      let lösen = storBokstav(slumpa(ord)) + storBokstav(slumpa(ord));
+      let antalOrd = Math.random() < 0.5 ? 2 : 3;
 
-      if (Math.random() < 0.4) {
+      let lösen = "";
+
+      for (let i = 0; i < antalOrd; i++) {
         lösen += storBokstav(slumpa(ord));
       }
 
-      lösen += Math.floor(Math.random() * 10);
+      let tal = Math.random() < 0.5
+        ? Math.floor(Math.random() * 10)
+        : Math.floor(Math.random() * 100);
+
+      lösen += tal;
+
       lösen += slumpa(special);
+      if (Math.random() < 0.4) {
+        lösen += slumpa(special);
+      }
 
       el.innerText = lösen;
 
@@ -240,7 +231,6 @@
       alert("Kopierat!");
     }
 
-    // musik
     const musik = document.getElementById("musik");
     let spelar = false;
 
