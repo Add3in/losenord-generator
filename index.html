@@ -6,7 +6,6 @@
 
   <title>Andreas superlösenordsgenerator</title>
 
-  <!-- ✅ FONT -->
   <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600&display=swap" rel="stylesheet">
 
   <style>
@@ -24,31 +23,64 @@
       overflow: hidden;
     }
 
+    /* overlay */
     body::before {
       content: "";
       position: absolute;
       inset: 0;
-      background: rgba(0,40,90,0.5);
+      background: rgba(0,40,90,0.4);
     }
 
+    /* 🔥 REALISTISK RÖK (flera lager) */
     .smoke {
       position: absolute;
       width: 200%;
       height: 200%;
-      background: radial-gradient(circle, rgba(255,255,255,0.06) 0%, transparent 60%);
-      animation: smokeMove 40s linear infinite;
+      pointer-events: none;
     }
 
-    @keyframes smokeMove {
-      from { transform: translate(-20%, -20%); }
-      to   { transform: translate(20%, 20%); }
+    .smoke::before,
+    .smoke::after {
+      content: "";
+      position: absolute;
+      width: 200%;
+      height: 200%;
+      background: radial-gradient(circle, rgba(255,255,255,0.08) 0%, transparent 60%);
+      filter: blur(40px);
     }
 
+    /* lager 1 */
+    .smoke::before {
+      animation: smoke1 60s linear infinite;
+      opacity: 0.4;
+    }
+
+    /* lager 2 */
+    .smoke::after {
+      animation: smoke2 90s linear infinite;
+      opacity: 0.3;
+    }
+
+    @keyframes smoke1 {
+      0%   { transform: translate(-30%, -30%) scale(1); }
+      50%  { transform: translate(10%, 10%) scale(1.2); }
+      100% { transform: translate(30%, 30%) scale(1); }
+    }
+
+    @keyframes smoke2 {
+      0%   { transform: translate(30%, -20%) scale(1.1); }
+      50%  { transform: translate(-10%, 20%) scale(1.3); }
+      100% { transform: translate(-30%, 40%) scale(1.1); }
+    }
+
+    /* kort */
     .container {
       position: relative;
       z-index: 2;
-      background: rgba(0,0,0,0.5);
-      backdrop-filter: blur(10px);
+
+      background: rgba(0,0,0,0.55);
+      backdrop-filter: blur(8px);
+
       padding: 25px;
       border-radius: 15px;
       text-align: center;
@@ -131,11 +163,11 @@
 
 <body>
 
+  <!-- 🔥 RÖK -->
   <div class="smoke"></div>
 
   <div class="container">
 
-    <!-- ✅ PROFILBILD -->
     <img src="profil.jpg" alt="profil">
 
     <h1>Andreas superlösenordsgenerator</h1>
@@ -151,11 +183,7 @@
 
   </div>
 
-  <!-- ✅ MUSIK -->
-  <audio id="musik" loop>
-    <source src="musik.mp3" type="audio/mpeg">
-  </audio>
-
+  <audio id="musik" src="musik.mp3" loop></audio>
   <div class="music-btn" onclick="toggleMusik()">🔊</div>
 
   <script>
@@ -169,7 +197,6 @@
       "laser","motor","drift","energi","zon"
     ];
 
-    // ✅ MASSA SPECIALTECKEN
     const special = [
       "!", "@", "#", "$", "%", "&", "*", "?",
       "+", "-", "_", "=", ":", ".", "/",
@@ -221,7 +248,6 @@
 
       lösen += tal;
 
-      // ✅ fler specialtecken ofta
       lösen += slumpa(special);
       if (Math.random() < 0.5) lösen += slumpa(special);
       if (Math.random() < 0.2) lösen += slumpa(special);
