@@ -6,7 +6,7 @@
 
   <title>Andreas superlösenordsgenerator</title>
 
-  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600&display=swap" rel="stylesheet">
+  https://fonts.googleapis.com/css2?family=Orbitron:wght@600&display=swap
 
   <style>
     body {
@@ -20,7 +20,6 @@
       display: flex;
       justify-content: center;
       align-items: center;
-      overflow: hidden;
     }
 
     body::before {
@@ -53,7 +52,6 @@
       font-family: 'Orbitron', sans-serif;
       color: white;
       font-size: 16px;
-      margin-bottom: 15px;
     }
 
     .password {
@@ -77,10 +75,6 @@
       width: 45%;
     }
 
-    button:hover {
-      background: #004999;
-    }
-
     .control-btn {
       width: 90%;
       margin-top: 10px;
@@ -98,7 +92,7 @@
       cursor: pointer;
     }
 
-    /* ✅ STRENGTH BAR */
+    /* ✅ STRENGTH */
     .strength {
       height: 6px;
       background: #444;
@@ -113,6 +107,13 @@
       transition: 0.3s;
     }
 
+    /* ✅ NY TEXT */
+    .strength-text {
+      margin-top: 8px;
+      font-size: 14px;
+      color: white;
+    }
+
     @media (max-width: 500px) {
       button {
         width: 100%;
@@ -125,17 +126,18 @@
 
   <div class="container">
 
-    <!-- PROFIL -->
-    <img src="profil.jpg" alt="profil">
+    profil.jpg
 
     <h1>Andreas superlösenordsgenerator</h1>
 
     <div id="losenord" class="password"></div>
 
-    <!-- ✅ NY STRENGTH BAR -->
     <div class="strength">
       <div id="bar" class="strength-bar"></div>
     </div>
+
+    <!-- ✅ NY TEXT -->
+    <div id="strengthText" class="strength-text">Strength: -</div>
 
     <button onclick="generera()">Generera</button>
     <button onclick="kopiera()">Kopiera</button>
@@ -144,7 +146,7 @@
 
   </div>
 
-  <audio id="musik" src="musik.mp3" loop></audio>
+  musik.mp3</audio>
 
   <div class="music-btn" onclick="toggleMusik()">🔊</div>
 
@@ -196,21 +198,31 @@
       if (/[!@#$%&*?]/.test(lösen)) score += 5;
 
       let bar = document.getElementById("bar");
+      let text = document.getElementById("strengthText");
 
       if (score > 30) {
         bar.style.width = "100%";
         bar.style.background = "#00ff66";
-
-        // 🔥 GLOW
         bar.style.boxShadow = "0 0 10px #00ff66, 0 0 20px #00ff66";
-      } else if (score > 20) {
+
+        text.innerText = "INSANE 🔥";
+        text.style.color = "#00ff66";
+      } 
+      else if (score > 20) {
         bar.style.width = "70%";
         bar.style.background = "orange";
         bar.style.boxShadow = "none";
-      } else {
+
+        text.innerText = "Strong ✅";
+        text.style.color = "orange";
+      } 
+      else {
         bar.style.width = "40%";
         bar.style.background = "red";
         bar.style.boxShadow = "none";
+
+        text.innerText = "Weak ⚠️";
+        text.style.color = "red";
       }
     }
 
@@ -228,7 +240,6 @@
 
       document.getElementById("losenord").innerText = lösen;
 
-      // ✅ KOPPLA IN STRENGTH
       styrka(lösen);
     }
 
