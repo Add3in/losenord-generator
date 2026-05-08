@@ -2,6 +2,10 @@
 <html lang="sv">
 <head>
   <meta charset="UTF-8">
+
+  <!-- ✅ VIKTIG: mobil scaling -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
   <title>Andreas superlösenordsgenerator</title>
 
   <!-- font -->
@@ -35,7 +39,7 @@
       position: absolute;
       width: 200%;
       height: 200%;
-      background: radial-gradient(circle, rgba(255,255,255,0.07) 0%, transparent 60%);
+      background: radial-gradient(circle, rgba(255,255,255,0.06) 0%, transparent 60%);
       animation: smokeMove 40s linear infinite;
     }
 
@@ -55,10 +59,13 @@
       padding: 25px;
       border-radius: 15px;
       text-align: center;
+
+      width: 90%;
+      max-width: 350px;
     }
 
     img {
-      width: 110px;
+      width: 100px;
       border-radius: 50%;
       margin-bottom: 10px;
     }
@@ -66,12 +73,12 @@
     h1 {
       font-family: 'Orbitron', sans-serif;
       color: white;
-      font-size: 18px;
+      font-size: 16px;
       margin-bottom: 15px;
     }
 
     .password {
-      font-size: 22px;
+      font-size: 20px;
       font-family: Consolas, monospace;
       background: rgba(255,255,255,0.95);
       color: black;
@@ -79,10 +86,12 @@
       padding: 12px;
       border-radius: 8px;
       margin: 15px 0;
+
+      word-break: break-all;
     }
 
     button {
-      padding: 10px 15px;
+      padding: 12px;
       margin: 5px;
       border: none;
       border-radius: 8px;
@@ -90,6 +99,9 @@
 
       background: #0066cc;
       color: white;
+
+      width: 45%;
+      font-size: 14px;
     }
 
     button:hover {
@@ -110,16 +122,31 @@
       transition: 0.3s;
     }
 
-    /* 🔊 musikknapp */
+    /* 🎵 knapp */
     .music-btn {
       position: fixed;
       bottom: 15px;
       right: 15px;
-      padding: 10px;
+      padding: 12px;
       border-radius: 50%;
       background: rgba(0,0,0,0.7);
       color: white;
-      cursor: pointer;
+      font-size: 18px;
+    }
+
+    /* ✅ EXTRA mobiljustering */
+    @media (max-width: 500px) {
+      h1 {
+        font-size: 14px;
+      }
+
+      .password {
+        font-size: 18px;
+      }
+
+      button {
+        width: 100%;
+      }
     }
   </style>
 </head>
@@ -131,7 +158,7 @@
   <div class="container">
 
     <!-- profil -->
-    <img src="profil.jpg">
+    <img src="profil.jpg" alt="profil">
 
     <h1>Andreas superlösenordsgenerator</h1>
 
@@ -146,7 +173,7 @@
 
   </div>
 
-  <!-- 🔊 MUSIK -->
+  <!-- 🎵 musik -->
   <audio id="musik" loop>
     <source src="musik.mp3" type="audio/mpeg">
   </audio>
@@ -213,7 +240,7 @@
       alert("Kopierat!");
     }
 
-    // 🎵 musik toggle
+    // musik
     const musik = document.getElementById("musik");
     let spelar = false;
 
