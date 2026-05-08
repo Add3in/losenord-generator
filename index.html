@@ -6,8 +6,6 @@
 
   <title>Andreas superlösenordsgenerator</title>
 
-  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600&display=swap" rel="stylesheet">
-
   <style>
     body {
       margin: 0;
@@ -29,13 +27,14 @@
       position: absolute;
       inset: 0;
       background: rgba(0,40,90,0.4);
+      z-index: 1;
     }
 
-    /* 🔥 REALISTISK RÖK (flera lager) */
+    /* ✅ NY RÖK (MYCKET TYDLIGARE) */
     .smoke {
       position: absolute;
-      width: 200%;
-      height: 200%;
+      inset: 0;
+      z-index: 2;
       pointer-events: none;
     }
 
@@ -43,22 +42,22 @@
     .smoke::after {
       content: "";
       position: absolute;
-      width: 200%;
-      height: 200%;
-      background: radial-gradient(circle, rgba(255,255,255,0.08) 0%, transparent 60%);
-      filter: blur(40px);
+      width: 180%;
+      height: 180%;
+      background: radial-gradient(circle, rgba(255,255,255,0.25) 0%, transparent 60%);
+      filter: blur(25px);
     }
 
     /* lager 1 */
     .smoke::before {
-      animation: smoke1 60s linear infinite;
-      opacity: 0.4;
+      animation: smoke1 35s linear infinite;
+      opacity: 0.6;
     }
 
     /* lager 2 */
     .smoke::after {
-      animation: smoke2 90s linear infinite;
-      opacity: 0.3;
+      animation: smoke2 50s linear infinite;
+      opacity: 0.5;
     }
 
     @keyframes smoke1 {
@@ -76,7 +75,7 @@
     /* kort */
     .container {
       position: relative;
-      z-index: 2;
+      z-index: 3;
 
       background: rgba(0,0,0,0.55);
       backdrop-filter: blur(8px);
@@ -95,7 +94,6 @@
     }
 
     h1 {
-      font-family: 'Orbitron', sans-serif;
       color: white;
       font-size: 16px;
       margin-bottom: 15px;
@@ -151,6 +149,7 @@
       color: white;
       font-size: 18px;
       cursor: pointer;
+      z-index: 4;
     }
 
     @media (max-width: 500px) {
@@ -163,12 +162,11 @@
 
 <body>
 
-  <!-- 🔥 RÖK -->
   <div class="smoke"></div>
 
   <div class="container">
 
-    <img src="profil.jpg" alt="profil">
+    <img src="profil.jpg">
 
     <h1>Andreas superlösenordsgenerator</h1>
 
@@ -183,97 +181,9 @@
 
   </div>
 
-  <audio id="musik" src="musik.mp3" loop></audio>
-  <div class="music-btn" onclick="toggleMusik()">🔊</div>
-
   <script>
-    const ord = [
-      "sol","skog","vatten","berg","vind","eld",
-      "stjarna","hav","moln","regn","sno","ljus","morker",
-      "sten","himlen","jord","flod","storm","is",
-      "dimma","aske","flamma","rost","skugga","natt",
-      "dag","ljud","eko","kraft","skydd","signal",
-      "kod","data","server","system","cloud","nackel",
-      "laser","motor","drift","energi","zon"
-    ];
-
-    const special = [
-      "!", "@", "#", "$", "%", "&", "*", "?",
-      "+", "-", "_", "=", ":", ".", "/",
-      "(", ")", "[", "]", "{", "}", "<", ">"
-    ];
-
-    function slumpa(lista) {
-      return lista[Math.floor(Math.random() * lista.length)];
-    }
-
-    function storBokstav(o) {
-      return o.charAt(0).toUpperCase() + o.slice(1);
-    }
-
-    function styrka(lösen) {
-      let score = lösen.length;
-
-      if (/[A-Z]/.test(lösen)) score += 5;
-      if (/[!@#$%&*?]/.test(lösen)) score += 5;
-      if (/[0-9]/.test(lösen)) score += 5;
-
-      let bar = document.getElementById("bar");
-
-      if (score > 25) {
-        bar.style.width = "100%";
-        bar.style.background = "green";
-      } else if (score > 18) {
-        bar.style.width = "70%";
-        bar.style.background = "orange";
-      } else {
-        bar.style.width = "40%";
-        bar.style.background = "red";
-      }
-    }
-
     function generera() {
-      let el = document.getElementById("losenord");
-
-      let antalOrd = Math.random() < 0.5 ? 2 : 3;
-      let lösen = "";
-
-      for (let i = 0; i < antalOrd; i++) {
-        lösen += storBokstav(slumpa(ord));
-      }
-
-      let tal = Math.random() < 0.5
-        ? Math.floor(Math.random() * 10)
-        : Math.floor(Math.random() * 100);
-
-      lösen += tal;
-
-      lösen += slumpa(special);
-      if (Math.random() < 0.5) lösen += slumpa(special);
-      if (Math.random() < 0.2) lösen += slumpa(special);
-
-      el.innerText = lösen;
-
-      styrka(lösen);
-    }
-
-    function kopiera() {
-      let text = document.getElementById("losenord").innerText;
-      navigator.clipboard.writeText(text);
-      alert("Kopierat!");
-    }
-
-    const musik = document.getElementById("musik");
-    let spelar = false;
-
-    function toggleMusik() {
-      if (spelar) {
-        musik.pause();
-        spelar = false;
-      } else {
-        musik.play();
-        spelar = true;
-      }
+      document.getElementById("losenord").innerText = "Test123!";
     }
 
     window.onload = generera;
