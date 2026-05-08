@@ -10,15 +10,20 @@ function slumpa(lista) {
   return lista[Math.floor(Math.random() * lista.length)];
 }
 
-function generera() {
-  // oftast dubbelord
-  let lösen = slumpa(ord) + slumpa(ord);
+function storBokstav(ord) {
+  return ord.charAt(0).toUpperCase() + ord.slice(1);
+}
 
-  // ibland tre ord
+function generera() {
+  // två ord, varje ord börjar med stor bokstav
+  let lösen = storBokstav(slumpa(ord)) + storBokstav(slumpa(ord));
+
+  // ibland ett tredje ord
   if (Math.random() < 0.4) {
-    lösen += slumpa(ord);
+    lösen += storBokstav(slumpa(ord));
   }
 
+  // siffra + specialtecken
   lösen += Math.floor(Math.random() * 10);
   lösen += slumpa(special);
 
