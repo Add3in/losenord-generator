@@ -10,8 +10,8 @@
       height: 100vh;
       font-family: Arial;
 
-      /* ✅ BAKGRUNDSBILD */
-      background: url("bakgrund.jpg") no-repeat center center fixed;
+      /* ✅ DIN EXAKTA FIL */
+      background: url("W_4K_-–-3.png") no-repeat center center fixed;
       background-size: cover;
 
       display: flex;
@@ -19,17 +19,16 @@
       align-items: center;
     }
 
-    /* 🔥 GLASMORPHISM KORT */
     .container {
-      background: rgba(255,255,255,0.2);
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
+      background: rgba(0,0,0,0.35);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
 
       padding: 25px;
       border-radius: 20px;
       text-align: center;
 
-      box-shadow: 0 10px 40px rgba(0,0,0,0.4);
+      box-shadow: 0 10px 40px rgba(0,0,0,0.6);
 
       animation: fadeIn 0.8s ease;
     }
@@ -45,7 +44,6 @@
       }
     }
 
-    /* ✅ PROFILBILD */
     img {
       width: 120px;
       border-radius: 50%;
@@ -55,7 +53,7 @@
 
     h1 {
       color: white;
-      text-shadow: 0 0 10px rgba(0,0,0,0.8);
+      text-shadow: 0 0 10px rgba(0,0,0,0.9);
       font-size: 20px;
     }
 
@@ -70,7 +68,6 @@
       transition: 0.2s;
     }
 
-    /* 🔥 ANIMATION VID GENERERING */
     .pulse {
       transform: scale(1.1);
       background: #d4f0ff;
@@ -101,8 +98,8 @@
 
   <div class="container">
 
-    <!-- ✅ VIKTIG RAD (bild fixad!) -->
-    <img src="profil.jpg" alt="profilbild">
+    <!-- ✅ PROFILBILD -->
+    <img src="profil.jpg" alt="profil">
 
     <h1>Andreas superlösenordsgenerator</h1>
 
@@ -144,7 +141,6 @@
 
       el.innerText = lösen;
 
-      // 🔥 animation
       el.classList.add("pulse");
       setTimeout(() => el.classList.remove("pulse"), 200);
     }
@@ -160,4 +156,3 @@
 
 </body>
 </html>
-``
