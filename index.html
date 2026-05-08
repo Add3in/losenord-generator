@@ -10,7 +10,6 @@
       height: 100vh;
       font-family: Arial;
 
-      /* ✅ DIN BILD */
       background: url("W_4K_-–-3.png") no-repeat center center fixed;
       background-size: cover;
 
@@ -19,85 +18,111 @@
       align-items: center;
     }
 
-    /* ✅ overlay för bättre text */
+    /* overlay */
     body::before {
       content: "";
       position: absolute;
       inset: 0;
-      background: rgba(0, 40, 90, 0.5); /* DIF-blå overlay */
+      background: rgba(0,40,90,0.5);
     }
 
-    /* 🔥 GLASS + GLOW */
     .container {
       position: relative;
-
       background: rgba(0,0,0,0.35);
       backdrop-filter: blur(12px);
-
       padding: 25px;
       border-radius: 20px;
       text-align: center;
 
-      /* 🔥 AI glow effekt */
       box-shadow:
-        0 0 20px rgba(0, 102, 204, 0.8),
-        0 0 60px rgba(0, 102, 204, 0.6),
-        0 10px 40px rgba(0,0,0,0.6);
+        0 0 20px #0066cc,
+        0 0 60px #0066cc;
 
-      animation: fadeIn 0.8s ease;
+      animation: fadeIn 1s ease;
+      overflow: hidden;
     }
 
     @keyframes fadeIn {
-      from {
-        opacity: 0;
-        transform: translateY(20px);
-      }
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* 🔥 glow border animation */
+    .container::before {
+      content: "";
+      position: absolute;
+      inset: -2px;
+      border-radius: 20px;
+      background: linear-gradient(45deg, #0066cc, #00ccff, #0066cc);
+      z-index: -1;
+      filter: blur(10px);
+      animation: glowMove 4s linear infinite;
+    }
+
+    @keyframes glowMove {
+      0% { filter: blur(10px) hue-rotate(0deg);}
+      100% { filter: blur(10px) hue-rotate(360deg);}
     }
 
     img {
       width: 120px;
       border-radius: 50%;
-      margin-bottom: 10px;
-      border: 3px solid #f6c600; /* DIF guld */
-      box-shadow: 0 0 15px #f6c600;
+      border: 3px solid #f6c600;
+      box-shadow: 0 0 20px #f6c600;
     }
 
     h1 {
-      color: #ffffff;
-      font-size: 20px;
-
-      /* ✨ glow text */
-      text-shadow:
-        0 0 10px #0066cc,
-        0 0 20px #0066cc,
-        0 0 30px #0066cc;
+      color: white;
+      text-shadow: 0 0 15px #0066cc;
     }
 
     .password {
-      font-size: 20px;
+      font-size: 22px;
       font-family: monospace;
-
-      background: rgba(255,255,255,0.95);
+      background: rgba(255,255,255,0.9);
       padding: 10px;
       border-radius: 10px;
       margin: 15px 0;
-
-      transition: 0.2s;
-
-      box-shadow: 0 0 10px rgba(255,255,255,0.6);
+      position: relative;
     }
 
-    /* 🔥 pulse glow */
-    .pulse {
-      transform: scale(1.1);
+    /* ⚡ glitch text */
+    .glitch {
+      color: black;
+      position: relative;
+    }
 
-      box-shadow:
-        0 0 20px #00ccff,
-        0 0 40px #00ccff;
+    .glitch::before,
+    .glitch::after {
+      content: attr(data-text);
+      position: absolute;
+      left: 0;
+      width: 100%;
+      color: black;
+    }
+
+    .glitch::before {
+      left: 2px;
+      text-shadow: -2px 0 red;
+      animation: glitch1 0.2s infinite;
+    }
+
+    .glitch::after {
+      left: -2px;
+      text-shadow: -2px 0 blue;
+      animation: glitch2 0.2s infinite;
+    }
+
+    @keyframes glitch1 {
+      0% { top: 0; }
+      50% { top: -2px; }
+      100% { top: 0; }
+    }
+
+    @keyframes glitch2 {
+      0% { top: 0; }
+      50% { top: 2px; }
+      100% { top: 0; }
     }
 
     button {
@@ -106,22 +131,29 @@
       border: none;
       border-radius: 10px;
       cursor: pointer;
-
-      background: linear-gradient(45deg, #0066cc, #0099ff);
+      background: linear-gradient(45deg,#0066cc,#00ccff);
       color: white;
       font-weight: bold;
-
-      transition: 0.2s;
-
-      box-shadow: 0 0 10px rgba(0,150,255,0.6);
     }
 
     button:hover {
-      transform: scale(1.08);
+      transform: scale(1.1);
+    }
 
-      box-shadow:
-        0 0 20px rgba(0,150,255,1),
-        0 0 40px rgba(0,150,255,0.8);
+    /* 🧠 strength meter */
+    .strength {
+      height: 8px;
+      border-radius: 5px;
+      background: #ccc;
+      margin-top: 10px;
+    }
+
+    .strength-bar {
+      height: 100%;
+      border-radius: 5px;
+      width: 0%;
+      background: red;
+      transition: 0.3s;
     }
   </style>
 </head>
@@ -130,12 +162,15 @@
 
   <div class="container">
 
-    <!-- ✅ PROFILBILD -->
     <img src="profil.jpg" alt="profil">
 
     <h1>Andreas superlösenordsgenerator</h1>
 
-    <div id="losenord" class="password"></div>
+    <div id="losenord" class="password glitch"></div>
+
+    <div class="strength">
+      <div id="bar" class="strength-bar"></div>
+    </div>
 
     <button onclick="generera()">Generera</button>
     <button onclick="kopiera()">Kopiera</button>
@@ -144,9 +179,8 @@
 
   <script>
     const ord = [
-      "sol", "skog", "vatten", "berg", "vind", "eld",
-      "stjarna", "hav", "moln", "regn", "sno", "ljus",
-      "morker", "blad", "rot"
+      "sol","skog","vatten","berg","vind","eld",
+      "stjarna","hav","moln","regn","sno","ljus","morker"
     ];
 
     const special = "!@#$%&*?";
@@ -155,8 +189,29 @@
       return lista[Math.floor(Math.random() * lista.length)];
     }
 
-    function storBokstav(ord) {
-      return ord.charAt(0).toUpperCase() + ord.slice(1);
+    function storBokstav(o) {
+      return o.charAt(0).toUpperCase() + o.slice(1);
+    }
+
+    function styrka(lösen) {
+      let score = lösen.length;
+
+      if (/[A-Z]/.test(lösen)) score += 5;
+      if (/[!@#$%&*?]/.test(lösen)) score += 5;
+      if (/[0-9]/.test(lösen)) score += 5;
+
+      let bar = document.getElementById("bar");
+
+      if (score > 25) {
+        bar.style.width = "100%";
+        bar.style.background = "green";
+      } else if (score > 18) {
+        bar.style.width = "70%";
+        bar.style.background = "orange";
+      } else {
+        bar.style.width = "40%";
+        bar.style.background = "red";
+      }
     }
 
     function generera() {
@@ -172,15 +227,35 @@
       lösen += slumpa(special);
 
       el.innerText = lösen;
+      el.setAttribute("data-text", lösen);
 
-      el.classList.add("pulse");
-      setTimeout(() => el.classList.remove("pulse"), 200);
+      styrka(lösen);
     }
 
     function kopiera() {
-      const text = document.getElementById("losenord").innerText;
+      let text = document.getElementById("losenord").innerText;
       navigator.clipboard.writeText(text);
-      alert("Kopierat!");
+
+      // 🎉 konfetti
+      for (let i = 0; i < 40; i++) {
+        let div = document.createElement("div");
+        div.style.position = "fixed";
+        div.style.width = "6px";
+        div.style.height = "6px";
+        div.style.background = "gold";
+        div.style.left = Math.random()*100 + "vw";
+        div.style.top = "0";
+        div.style.zIndex = "9999";
+
+        document.body.appendChild(div);
+
+        let fall = div.animate([
+          { transform: "translateY(0)" },
+          { transform: "translateY(100vh)" }
+        ], { duration: 1000 + Math.random()*1000 });
+
+        fall.onfinish = () => div.remove();
+      }
     }
 
     window.onload = generera;
