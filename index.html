@@ -6,8 +6,6 @@
 
   <title>Andreas superlösenordsgenerator</title>
 
-  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600&display=swap" rel="stylesheet">
-
   <style>
     body {
       margin: 0;
@@ -20,7 +18,6 @@
       display: flex;
       justify-content: center;
       align-items: center;
-      overflow: hidden;
     }
 
     body::before {
@@ -50,20 +47,24 @@
     }
 
     h1 {
-      font-family: 'Orbitron', sans-serif;
       color: white;
       font-size: 16px;
-      margin-bottom: 15px;
     }
 
     .password {
       font-size: 20px;
-      font-family: Consolas, monospace;
+      font-family: monospace;
       background: white;
       color: black;
       padding: 12px;
       border-radius: 8px;
       margin: 15px 0;
+      transition: 0.2s;
+    }
+
+    /* ✅ grönt blink vid kopiering */
+    .copied {
+      background: #c8f7c5;
     }
 
     button {
@@ -77,25 +78,29 @@
       width: 45%;
     }
 
-    button:hover {
-      background: #004999;
-    }
-
-    .control-btn {
+    .full-btn {
       width: 90%;
-      margin-top: 10px;
-      background: #333;
     }
 
-    .music-btn {
-      position: fixed;
-      bottom: 15px;
-      right: 15px;
-      padding: 12px;
-      border-radius: 50%;
-      background: rgba(0,0,0,0.7);
-      color: white;
-      cursor: pointer;
+    select {
+      margin-top: 10px;
+      padding: 8px;
+      border-radius: 5px;
+      width: 90%;
+    }
+
+    .strength {
+      height: 6px;
+      background: #ccc;
+      border-radius: 5px;
+      margin-top: 10px;
+    }
+
+    .strength-bar {
+      height: 100%;
+      width: 0%;
+      border-radius: 5px;
+      transition: 0.3s;
     }
 
     @media (max-width: 500px) {
@@ -110,44 +115,31 @@
 
   <div class="container">
 
-    <!-- PROFIL -->
-    <img src="profil.jpg" alt="profil">
+    <img src="profil.jpg">
 
     <h1>Andreas superlösenordsgenerator</h1>
 
     <div id="losenord" class="password"></div>
 
+    <!-- ✅ STYRKEBAR -->
+    <div class="strength">
+      <div id="bar" class="strength-bar"></div>
+    </div>
+
     <button onclick="generera()">Generera</button>
     <button onclick="kopiera()">Kopiera</button>
 
-    <!-- 🔥 NY KNAPP -->
-    <button class="control-btn" onclick="bytBakgrund()">Byt bakgrund</button>
+    <!-- ✅ INSTÄLLNINGAR -->
+    <select id="ordCount">
+      <option value="2">2 ord</option>
+      <option value="3" selected>3 ord</option>
+      <option value="4">4 ord</option>
+      <option value="5">5 ord</option>
+    </select>
 
   </div>
 
-  <audio id="musik" src="musik.mp3" loop></audio>
-
-  <div class="music-btn" onclick="toggleMusik()">🔊</div>
-
   <script>
-    const backgrounds = [
-      "W_4K_-–-3.png",
-      "bakgrund2.jpg",
-      "bakgrund3.jpg"
-    ];
-
-    let currentBg = 0;
-
-    function bytBakgrund() {
-      currentBg++;
-      if (currentBg >= backgrounds.length) currentBg = 0;
-
-      document.body.style.background =
-        `url("${backgrounds[currentBg]}") no-repeat center center fixed`;
-
-      document.body.style.backgroundSize = "cover";
-    }
-
     const ord = [
       "sol","skog","vatten","berg","vind","eld",
       "stjarna","hav","moln","regn","sno","ljus",
@@ -169,39 +161,56 @@
       return o.charAt(0).toUpperCase() + o.slice(1);
     }
 
-    function generera() {
-      let lösen =
-        storBokstav(slumpa(ord)) +
-        storBokstav(slumpa(ord));
+    function styrka(lösen) {
+      let score = lösen.length;
 
-      if (Math.random() < 0.4) {
+      if (/[A-Z]/.test(lösen)) score += 5;
+      if (/[0-9]/.test(lösen)) score += 5;
+      if (/[!@#$%&*?]/.test(lösen)) score += 5;
+
+      let bar = document.getElementById("bar");
+
+      if (score > 30) {
+        bar.style.width = "100%";
+        bar.style.background = "green";
+      } else if (score > 20) {
+        bar.style.width = "70%";
+        bar.style.background = "orange";
+      } else {
+        bar.style.width = "40%";
+        bar.style.background = "red";
+      }
+    }
+
+    function generera() {
+      let el = document.getElementById("losenord");
+
+      let antalOrd = document.getElementById("ordCount").value;
+
+      let lösen = "";
+
+      for (let i = 0; i < antalOrd; i++) {
         lösen += storBokstav(slumpa(ord));
       }
 
       lösen += Math.floor(Math.random() * 100);
       lösen += slumpa(special);
 
-      document.getElementById("losenord").innerText = lösen;
+      el.innerText = lösen;
+
+      styrka(lösen);
     }
 
     function kopiera() {
-      navigator.clipboard.writeText(
-        document.getElementById("losenord").innerText
-      );
-      alert("Kopierat!");
-    }
+      let el = document.getElementById("losenord");
+      navigator.clipboard.writeText(el.innerText);
 
-    const musik = document.getElementById("musik");
-    let spelar = false;
+      // ✅ VISUELL FEEDBACK ISTÄLLET FÖR ALERT
+      el.classList.add("copied");
 
-    function toggleMusik() {
-      if (spelar) {
-        musik.pause();
-        spelar = false;
-      } else {
-        musik.play();
-        spelar = true;
-      }
+      setTimeout(() => {
+        el.classList.remove("copied");
+      }, 500);
     }
 
     window.onload = generera;
