@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Andreas superlösenordsgenerator</title>
+
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600&display=swap" rel="stylesheet">
+
+  <style>
+    body {
+      margin: 0;
+      height: 100vh;
+      font-family: Arial;
+
+      background: url("W_4K_-–-3.png") no-repeat center center fixed;
+      background-size: cover;
+
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      overflow: hidden;
+    }
+
+    body::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: rgba(0,40,90,0.5);
+      z-index: 1;
+    }
+
+    .container {
+      position: relative;
+      z-index: 2;
+      background: rgba(0,0,0,0.5);
+      backdrop-filter: blur(10px);
+      padding: 25px;
+      border-radius: 15px;
+      text-align: center;
+      width: 90%;
+      max-width: 350px;
+    }
+
+    img {
+      width: 100px;
+      border-radius: 50%;
+      margin-bottom: 10px;
+    }
+
+    h1 {
+      font-family: 'Orbitron', sans-serif;
+      color: white;
+      font-size: 16px;
+      margin-bottom: 15px;
+    }
+
+    .password {
+      font-size: 20px;
+      font-family: Consolas, monospace;
+      background: white;
+      color: black;
+      padding: 12px;
+      border-radius: 8px;
+      margin: 15px 0;
+    }
+
+    button {
+      padding: 12px;
+      margin: 5px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      background: #0066cc;
+      color: white;
+      width: 45%;
+    }
+
+    button:hover {
+      background: #004999;
+    }
+
+    .control-btn {
+      width: 90%;
+      margin-top: 10px;
+      background: #333;
+    }
+
+    .music-btn {
+      position: fixed;
+      bottom: 15px;
+      right: 15px;
+      padding: 12px;
+      border-radius: 50%;
+      background: rgba(0,0,0,0.7);
+      color: white;
+      cursor: pointer;
+    }
+
+    @media (max-width: 500px) {
+      button {
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="container">
+
+    <!-- PROFIL -->
+    <img src="profil.jpg" alt="profil">
+
+    <h1>Andreas superlösenordsgenerator</h1>
+
+    <div id="losenord" class="password"></div>
+
+    <button onclick="generera()">Generera</button>
+    <button onclick="kopiera()">Kopiera</button>
+
+    <!-- 🔥 NY KNAPP -->
+    <button class="control-btn" onclick="bytBakgrund()">Byt bakgrund</button>
+
+  </div>
+
+  <audio id="musik" src="musik.mp3" loop></audio>
+
+  <div class="music-btn" onclick="toggleMusik()">🔊</div>
+
+  <script>
+    const backgrounds = [
+      "W_4K_-–-3.png",
+      "bakgrund2.jpg",
+      "bakgrund3.jpg"
+    ];
+
+    let currentBg = 0;
+
+    function bytBakgrund() {
+      currentBg++;
+      if (currentBg >= backgrounds.length) currentBg = 0;
+
+      document.body.style.background =
+        `url("${backgrounds[currentBg]}") no-repeat center center fixed`;
+
+      document.body.style.backgroundSize = "cover";
+    }
+
+    const ord = [
+      "sol","skog","vatten","berg","vind","eld",
+      "stjarna","hav","moln","regn","sno","ljus",
+      "morker","sten","jord","storm","natt",
+      "data","system","kod","signal"
+    ];
+
+    const special = [
+      "!", "@", "#", "$", "%", "&", "*", "?",
+      "+", "-", "_", "=", ":", ".", "/",
+      "(", ")", "<", ">"
+    ];
+
+    function slumpa(lista) {
+      return lista[Math.floor(Math.random() * lista.length)];
+    }
+
+    function storBokstav(o) {
+      return o.charAt(0).toUpperCase() + o.slice(1);
+    }
+
+    function generera() {
+      let lösen =
+        storBokstav(slumpa(ord)) +
+        storBokstav(slumpa(ord));
+
+      if (Math.random() < 0.4) {
+        lösen += storBokstav(slumpa(ord));
+      }
+
+      lösen += Math.floor(Math.random() * 100);
+      lösen += slumpa(special);
+
+      document.getElementById("losenord").innerText = lösen;
+    }
+
+    function kopiera() {
+      navigator.clipboard.writeText(
+        document.getElementById("losenord").innerText
+      );
+      alert("Kopierat!");
+    }
+
+    const musik = document.getElementById("musik");
+    let spelar = false;
+
+    function toggleMusik() {
+      if (spelar) {
+        musik.pause();
+        spelar = false;
+      } else {
+        musik.play();
+        spelar = true;
+      }
+    }
+
+    window.onload = generera;
+  </script>
+
+</body>
+</html>
+``
