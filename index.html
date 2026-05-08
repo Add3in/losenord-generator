@@ -98,6 +98,21 @@
       cursor: pointer;
     }
 
+    /* ✅ STRENGTH BAR */
+    .strength {
+      height: 6px;
+      background: #444;
+      border-radius: 5px;
+      margin-top: 8px;
+      overflow: hidden;
+    }
+
+    .strength-bar {
+      height: 100%;
+      width: 0%;
+      transition: 0.3s;
+    }
+
     @media (max-width: 500px) {
       button {
         width: 100%;
@@ -117,10 +132,14 @@
 
     <div id="losenord" class="password"></div>
 
+    <!-- ✅ NY STRENGTH BAR -->
+    <div class="strength">
+      <div id="bar" class="strength-bar"></div>
+    </div>
+
     <button onclick="generera()">Generera</button>
     <button onclick="kopiera()">Kopiera</button>
 
-    <!-- 🔥 NY KNAPP -->
     <button class="control-btn" onclick="bytBakgrund()">Byt bakgrund</button>
 
   </div>
@@ -169,6 +188,32 @@
       return o.charAt(0).toUpperCase() + o.slice(1);
     }
 
+    function styrka(lösen) {
+      let score = lösen.length;
+
+      if (/[A-Z]/.test(lösen)) score += 5;
+      if (/[0-9]/.test(lösen)) score += 5;
+      if (/[!@#$%&*?]/.test(lösen)) score += 5;
+
+      let bar = document.getElementById("bar");
+
+      if (score > 30) {
+        bar.style.width = "100%";
+        bar.style.background = "#00ff66";
+
+        // 🔥 GLOW
+        bar.style.boxShadow = "0 0 10px #00ff66, 0 0 20px #00ff66";
+      } else if (score > 20) {
+        bar.style.width = "70%";
+        bar.style.background = "orange";
+        bar.style.boxShadow = "none";
+      } else {
+        bar.style.width = "40%";
+        bar.style.background = "red";
+        bar.style.boxShadow = "none";
+      }
+    }
+
     function generera() {
       let lösen =
         storBokstav(slumpa(ord)) +
@@ -182,6 +227,9 @@
       lösen += slumpa(special);
 
       document.getElementById("losenord").innerText = lösen;
+
+      // ✅ KOPPLA IN STRENGTH
+      styrka(lösen);
     }
 
     function kopiera() {
@@ -209,4 +257,3 @@
 
 </body>
 </html>
-``
