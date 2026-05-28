@@ -76,46 +76,40 @@
       width: 45%;
     }
 
-    button:hover {
-      background: #004999;
-    }
-
     .control-btn {
       width: 90%;
       margin-top: 10px;
       background: #333;
     }
 
+    /* ✅ MUSIK-KNAPP */
     .music-btn {
       position: fixed;
       bottom: 15px;
       right: 15px;
-      padding: 12px;
+      width: 50px;
+      height: 50px;
       border-radius: 50%;
       background: rgba(0,0,0,0.7);
-      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
       cursor: pointer;
-    }
-
-    /* ✅ NY: BACKGROUND-KNAPP UPPE */
-    .bg-btn {
-      position: fixed;
-      top: 15px;
-      right: 15px;
-      padding: 10px 12px;
-      border-radius: 10px;
-      background: rgba(0,0,0,0.7);
-      color: white;
-      cursor: pointer;
-      font-size: 14px;
       z-index: 3;
+      font-size: 20px;
     }
 
-    .bg-btn:hover {
-      background: rgba(0,0,0,0.9);
+    /* 🔴 röd linje när av */
+    .muted::after {
+      content: "";
+      position: absolute;
+      width: 30px;
+      height: 3px;
+      background: red;
+      transform: rotate(45deg);
     }
 
-    /* STRENGTH */
+    /* strength */
     .strength {
       height: 6px;
       background: #444;
@@ -140,9 +134,6 @@
 
 <body>
 
-  <!-- ✅ NY KNAPP -->
-  <div class="bg-btn" onclick="bytBakgrund()">Bakgrund</div>
-
   <div class="container">
 
     <img src="profil.jpg" alt="profil">
@@ -162,34 +153,17 @@
 
   <audio id="musik" src="musik.mp3" loop></audio>
 
-  <div class="music-btn" onclick="toggleMusik()">🔊</div>
+  <!-- ✅ KNAPP -->
+  <div id="musicBtn" class="music-btn muted" onclick="toggleMusik()">🔊</div>
 
   <script>
-    const backgrounds = [
-      "W_4K_-–-3.png",
-      "bakgrund2.jpg",
-      "bakgrund3.jpg"
-    ];
-
-    let currentBg = 0;
-
-    function bytBakgrund() {
-      currentBg++;
-      if (currentBg >= backgrounds.length) currentBg = 0;
-
-      document.body.style.background =
-        `url("${backgrounds[currentBg]}") no-repeat center center fixed`;
-
-      document.body.style.backgroundSize = "cover";
-    }
-
     const ord = [
       "sol","kant","skog","vatten","berg","vind","eld",
       "stjarna","hav","kvast","struts","svamp","korg",
       "ost","grus","garn","moln","regn","sno","ljus",
       "morker","sten","jord","sot","haj","storm",
       "natt","hund","kjol","data","system","kod",
-      "katt","stol","signal","skibidi","katt","korg","kvast"
+      "katt","stol","signal"
     ];
 
     const special = [
@@ -256,22 +230,19 @@
       styrka(lösen);
     }
 
-    function kopiera() {
-      navigator.clipboard.writeText(
-        document.getElementById("losenord").innerText
-      );
-    }
-
     const musik = document.getElementById("musik");
+    const btn = document.getElementById("musicBtn");
     let spelar = false;
 
     function toggleMusik() {
       if (spelar) {
         musik.pause();
         spelar = false;
+        btn.classList.add("muted");
       } else {
-        musik.play();
+        musik.play().catch(() => {});
         spelar = true;
+        btn.classList.remove("muted");
       }
     }
 
