@@ -6,7 +6,6 @@
 
   <title>Andreas superlösenordsgenerator</title>
 
-  <!-- ✅ FIXAD FONT -->
   <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600&display=swap" rel="stylesheet">
 
   <style>
@@ -14,22 +13,29 @@
       margin: 0;
       height: 100vh;
       font-family: Arial;
+      background-color: black;
 
       display: flex;
       justify-content: center;
       align-items: center;
-
       overflow: hidden;
     }
 
-    /* ✅ VIDEO */
+    /* ✅ VIDEO FIXAD */
     .video-bg {
       position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-     절(height: 100%);
+      top: 50%;
+      left: 50%;
+
+      min-width: 100%;
+      min-height: 100%;
+
+      width: auto;
+      height: auto;
+
+      transform: translate(-50%, -50%);
       object-fit: cover;
+
       z-index: -2;
     }
 
@@ -67,6 +73,7 @@
       font-family: 'Orbitron', sans-serif;
       color: white;
       font-size: 16px;
+      margin-bottom: 15px;
     }
 
     .password {
@@ -90,7 +97,11 @@
       width: 45%;
     }
 
-    /* ✅ musikknapp */
+    button:hover {
+      background: #004999;
+    }
+
+    /* 🔊 musik-knapp */
     .music-btn {
       position: fixed;
       bottom: 15px;
@@ -99,13 +110,17 @@
       height: 50px;
       border-radius: 50%;
       background: rgba(0,0,0,0.7);
+
       display: flex;
       align-items: center;
       justify-content: center;
+
       cursor: pointer;
       z-index: 3;
+      font-size: 20px;
     }
 
+    /* 🔴 streck */
     .muted::after {
       content: "";
       position: absolute;
@@ -115,7 +130,7 @@
       transform: rotate(45deg);
     }
 
-    /* strength */
+    /* ✅ STYRKA */
     .strength {
       height: 6px;
       background: #444;
@@ -128,12 +143,18 @@
       width: 0%;
       transition: 0.3s;
     }
+
+    @media (max-width: 500px) {
+      button {
+        width: 100%;
+      }
+    }
   </style>
 </head>
 
 <body>
 
-  <!-- ✅ FIXAD VIDEO -->
+  <!-- ✅ VIDEO -->
   <video class="video-bg" autoplay muted loop playsinline>
     <source src="bakgrund.mp4" type="video/mp4">
   </video>
@@ -160,7 +181,10 @@
   <div id="musicBtn" class="music-btn muted" onclick="toggleMusik()">🔊</div>
 
   <script>
-    const ord = ["sol","skog","vatten","berg","vind","eld","moln","katt","hund","data"];
+    const ord = [
+      "sol","skog","vatten","berg","vind","eld",
+      "moln","katt","hund","data","system","kod"
+    ];
 
     const special = ["!", "@", "#", "$", "%", "&", "*", "?"];
 
@@ -174,8 +198,10 @@
 
     function styrka(lösen) {
       let score = lösen.length;
+
       if (/[A-Z]/.test(lösen)) score += 5;
       if (/[0-9]/.test(lösen)) score += 5;
+      if (/[!@#$%&*?]/.test(lösen)) score += 5;
 
       let bar = document.getElementById("bar");
 
@@ -183,9 +209,14 @@
         bar.style.width = "100%";
         bar.style.background = "#00ff66";
         bar.style.boxShadow = "0 0 20px #00ff66";
-      } else {
-        bar.style.width = "50%";
+      } else if (score > 18) {
+        bar.style.width = "70%";
         bar.style.background = "orange";
+        bar.style.boxShadow = "none";
+      } else {
+        bar.style.width = "40%";
+        bar.style.background = "red";
+        bar.style.boxShadow = "none";
       }
     }
 
@@ -212,6 +243,7 @@
 
     const musik = document.getElementById("musik");
     const btn = document.getElementById("musicBtn");
+
     let spelar = false;
 
     function toggleMusik() {
@@ -220,7 +252,7 @@
         spelar = false;
         btn.classList.add("muted");
       } else {
-        musik.play().catch(()=>{});
+        musik.play().catch(() => {});
         spelar = true;
         btn.classList.remove("muted");
       }
@@ -231,4 +263,3 @@
 
 </body>
 </html>
-``
